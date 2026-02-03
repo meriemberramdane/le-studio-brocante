@@ -1,13 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import ProductCard from '@/components/ProductCard'
 import { Product } from '@/lib/supabase'
 import { ChevronDown } from 'lucide-react'
 
-export default function ShopPage() {
+function ShopContent() {
   const searchParams = useSearchParams()
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
@@ -224,5 +224,12 @@ export default function ShopPage() {
         </div>
       </div>
     </div>
+  )
+}
+export default function ShopPage() {
+  return (
+    <Suspense fallback={<div>Chargement...</div>}>
+      <ShopContent />
+    </Suspense>
   )
 }
