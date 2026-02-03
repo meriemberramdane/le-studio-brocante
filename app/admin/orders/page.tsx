@@ -68,20 +68,6 @@ export default function AdminOrders() {
     }
   }
 
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return 'En attente'
-      case 'confirmed':
-        return 'Confirmée'
-      case 'shipped':
-        return 'Expédiée'
-      case 'completed':
-        return 'Complétée'
-      default:
-        return status
-    }
-  }
 
   return (
     <div>
