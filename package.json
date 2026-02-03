@@ -1,0 +1,35 @@
+{
+  "name": "le-studio-brocante",
+  "version": "1.0.0",
+  "description": "Le Studio Brocante - Premium vintage and antique online store",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.94.0",
+    "autoprefixer": "^10.4.16",
+    "clsx": "^2.0.0",
+    "lucide-react": "^0.292.0",
+    "next": "^14.2.35",
+    "postcss": "^8.4.31",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "resend": "^6.9.1",
+    "sharp": "^0.32.6",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5.3.0",
+    "zustand": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "eslint": "^8.52.0",
+    "eslint-config-next": "^14.0.0"
+  }
+}
