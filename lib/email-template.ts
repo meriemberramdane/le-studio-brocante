@@ -79,8 +79,6 @@ export function getOrderConfirmationEmail(
 }
 
 export function getAdminNotificationEmail(
-  adminEmail: string,
-  orderNumber: string,
   customerName: string,
   items: any[],
   total: number
