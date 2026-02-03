@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 import ProductCard from '@/components/ProductCard'
 import { Armchair, Frame, Lightbulb, Palette, Sparkles, Wind, Heart, Banknote, Gem, Book, Shirt 
