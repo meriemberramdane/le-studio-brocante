@@ -19,8 +19,6 @@ export async function POST(request: NextRequest) {
 
     // Email à l'admin
     const adminEmailHtml = getAdminNotificationEmail(
-      ADMIN_EMAIL,
-      orderNumber,
       customerName,
       items,
       total
