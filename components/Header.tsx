@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useCart } from '@/lib/cart-store'
-import { ShoppingCart, Search, Menu, X } from 'lucide-react'
+import { ShoppingCart, Search, Menu, X, Heart } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 export default function Header() {
@@ -80,6 +80,9 @@ export default function Header() {
             className="text-xs text-primary-200 hover:text-accent-orange transition-colors"
           >
             Admin
+          </Link>
+           <Link href="/favorites" className="hover:text-accent-orange transition-colors flex items-center gap-2">
+              <Heart size={20} />
           </Link>
 
           {/* Mobile Menu Button */}

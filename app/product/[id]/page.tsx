@@ -17,6 +17,7 @@ export default function ProductPage({
   const [quantity, setQuantity] = useState(1)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [addedToCart, setAddedToCart] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false)
   const { addItem } = useCart()
 
   useEffect(() => {
@@ -38,6 +39,29 @@ export default function ProductPage({
     } finally {
       setLoading(false)
     }
+  }
+
+  useEffect(() => {
+    if (product?.id) {
+      const favorites = JSON.parse(localStorage.getItem('favorites') || '[]')
+      setIsFavorite(favorites.includes(product.id))
+    }
+  }, [product?.id])
+
+  const toggleFavorite = () => {
+    if (!product?.id) return
+    
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]')
+    
+    if (isFavorite) {
+      const updated = favorites.filter((id: string) => id !== product.id)
+      localStorage.setItem('favorites', JSON.stringify(updated))
+    } else {
+      favorites.push(product.id)
+      localStorage.setItem('favorites', JSON.stringify(favorites))
+    }
+    
+    setIsFavorite(!isFavorite)
   }
 
   const handleAddToCart = () => {
@@ -250,9 +274,6 @@ export default function ProductPage({
                     +
                   </button>
                 </div>
-                <button className="p-3 border border-primary-200 rounded-lg hover:bg-primary-50 transition-colors">
-                  <Heart size={20} className="text-primary-700" />
-                </button>
               </div>
 
               {isSold ? (
@@ -272,8 +293,15 @@ export default function ProductPage({
                 </button>
               )}
 
-              <button className="w-full py-4 btn-secondary rounded-lg font-semibold">
-                Réserver cet article
+              <button 
+                onClick={toggleFavorite}
+                className="w-full py-4 flex items-center justify-center gap-2 bg-white border-2 border-orange-600 text-orange-600 rounded-lg font-semibold hover:bg-orange-50 transition"
+              >
+                <Heart 
+                  size={24} 
+                  fill={isFavorite ? 'currentColor' : 'none'}
+                />
+                {isFavorite ? 'Retiré des Favoris' : 'Ajouter aux Favoris'}
               </button>
             </div>
           </div>
