@@ -1,253 +1,264 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase, Order } from '@/lib/supabase'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { useCart } from '@/lib/cart-store'
+import { supabase } from '@/lib/supabase'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
-export default function AdminOrders() {
-  const [orders, setOrders] = useState<Order[]>([])
-  const [loading, setLoading] = useState(true)
-  const [updatingId, setUpdatingId] = useState<string | null>(null)
-  const [expandedId, setExpandedId] = useState<string | null>(null)
+export default function CheckoutPage() {
+  const router = useRouter()
+  const [mounted, setMounted] = useState(false)
+  const { items, getTotalPrice, clearCart } = useCart()
+  const [loading, setLoading] = useState(false)
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    city: '',
+    address: '',
+    notes: '',
+  })
 
   useEffect(() => {
-    fetchOrders()
+    setMounted(true)
   }, [])
 
-  async function fetchOrders() {
+  if (!mounted) return null
+
+  if (items.length === 0) {
+    return (
+      <div className="min-h-screen py-12 bg-primary-50">
+        <div className="container-narrow">
+          <div className="bg-white rounded-2xl p-12 text-center">
+            <p className="text-xl text-primary-600 mb-6">
+              Votre panier est vide
+            </p>
+            <Link href="/shop" className="btn-primary">
+              Retourner à la boutique
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+
     try {
+      const orderItems = items.map((item) => ({
+        product_id: item.product_id,
+        product_name: item.product?.name || '',
+        price: item.product?.price || 0,
+        quantity: item.quantity,
+      }))
+
+      const orderData = {
+        full_name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        city: formData.city,
+        address: formData.address,
+        notes: formData.notes || null,
+        items: orderItems,
+        total: getTotalPrice(),
+        status: 'pending',
+      }
+
       const { data, error } = await supabase
         .from('orders')
-        .select('*')
-        .order('created_at', { ascending: false })
+        .insert([orderData])
+        .select()
+        .single()
+
+      if (data) {
+        try {
+          const orderNumber = data.id.substring(0, 8).toUpperCase()
+          await fetch('/api/send-order-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              orderNumber,
+              customerName: formData.fullName,
+              customerEmail: formData.email,
+              items: orderItems,
+              total: getTotalPrice(),
+            }),
+          })
+        } catch (emailError) {
+          console.error('Email sending failed:', emailError)
+        }
+      }
 
       if (error) throw error
-      setOrders(data || [])
+
+      clearCart()
+      router.push(`/order-confirmation/${data.id}`)
     } catch (error) {
-      console.error('Error fetching orders:', error)
+      console.error('Error creating order:', error)
+      alert('Une erreur est survenue. Veuillez réessayer.')
     } finally {
       setLoading(false)
     }
   }
 
-  async function updateOrderStatus(orderId: string, newStatus: string) {
-    setUpdatingId(orderId)
-    try {
-      const { error } = await supabase
-        .from('orders')
-        .update({ status: newStatus })
-        .eq('id', orderId)
-
-      if (error) throw error
-
-      setOrders(
-        orders.map((order) =>
-          order.id === orderId ? { ...order, status: newStatus as any } : order
-        )
-      )
-    } catch (error) {
-      console.error('Error updating order:', error)
-      alert('Erreur lors de la mise à jour')
-    } finally {
-      setUpdatingId(null)
-    }
-  }
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800'
-      case 'confirmed':
-        return 'bg-blue-100 text-blue-800'
-      case 'shipped':
-        return 'bg-purple-100 text-purple-800'
-      case 'completed':
-        return 'bg-green-100 text-green-800'
-      default:
-        return 'bg-gray-100 text-gray-800'
-    }
-  }
-
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return 'En attente'
-      case 'confirmed':
-        return 'Confirmée'
-      case 'shipped':
-        return 'Expédiée'
-      case 'completed':
-        return 'Complétée'
-      default:
-        return status
-    }
-  }
+  const total = getTotalPrice()
 
   return (
-    <div>
-      <h1 className="text-4xl font-serif font-bold text-primary-700 mb-8">
-        Commandes
-      </h1>
+    <div className="min-h-screen py-12 bg-primary-50">
+      <div className="container-narrow">
+        <h1 className="text-4xl font-serif font-bold text-primary-700 mb-12">
+          Passer la commande
+        </h1>
 
-      {loading ? (
-        <p className="text-primary-600">Chargement...</p>
-      ) : orders.length === 0 ? (
-        <div className="bg-white rounded-2xl p-12 text-center">
-          <p className="text-primary-600">Aucune commande pour le moment</p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {orders.map((order) => (
-            <div
-              key={order.id}
-              className="bg-white rounded-2xl shadow-soft overflow-hidden"
-            >
-              {/* Order Header */}
-              <div
-                onClick={() =>
-                  setExpandedId(expandedId === order.id ? null : order.id)
-                }
-                className="px-6 py-4 cursor-pointer hover:bg-primary-50 transition-colors flex items-center justify-between"
-              >
-                <div className="flex-1">
-                  <div className="flex items-center gap-4 mb-2">
-                    <p className="font-serif font-bold text-primary-700">
-                      #{order.id.substring(0, 8).toUpperCase()}
-                    </p>
-                    <span
-                      className={`text-xs font-medium px-3 py-1 rounded-full ${getStatusColor(
-                        order.status
-                      )}`}
-                    >
-                      {getStatusLabel(order.status)}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-4 gap-4 text-sm text-primary-600">
-                    <div>
-                      <p className="font-semibold text-primary-700">Client</p>
-                      <p>{order.full_name}</p>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-primary-700">Email</p>
-                      <p className="text-xs">{order.email}</p>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-primary-700">Téléphone</p>
-                      <p>{order.phone || 'Non fourni'}</p>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-primary-700">Total</p>
-                      <p className="font-serif font-bold text-accent-orange">
-                        DA{order.total.toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="ml-4">
-                  {expandedId === order.id ? (
-                    <ChevronUp size={24} className="text-primary-700" />
-                  ) : (
-                    <ChevronDown size={24} className="text-primary-700" />
-                  )}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          {/* Form */}
+          <div className="lg:col-span-2">
+            <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 space-y-6">
+              {/* Personal Info */}
+              <div>
+                <h3 className="font-serif font-semibold text-lg text-primary-700 mb-4">
+                  Informations personnelles
+                </h3>
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    name="fullName"
+                    placeholder="Nom complet"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    required
+                    className="input-field"
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="input-field"
+                  />
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Numéro de téléphone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    className="input-field"
+                  />
                 </div>
               </div>
 
-              {/* Expanded Details */}
-              {expandedId === order.id && (
-                <div className="border-t border-primary-200 px-6 py-4 bg-primary-50">
-                  {/* Articles */}
-                  <div className="mb-6">
-                    <h3 className="font-serif font-semibold text-primary-700 mb-4">
-                      Articles commandés
-                    </h3>
-                    <div className="space-y-3">
-                      {order.items && order.items.length > 0 ? (
-                        order.items.map((item: any, idx: number) => (
-                          <div
-                            key={idx}
-                            className="bg-white p-4 rounded-lg border border-primary-200 flex justify-between items-center"
-                          >
-                            <div>
-                              <p className="font-semibold text-primary-700">
-                                {item.product_name}
-                              </p>
-                              <p className="text-sm text-primary-600">
-                                Prix unitaire: DA{item.price.toFixed(2)}
-                              </p>
-                            </div>
-                            <div className="text-right">
-                              <p className="font-semibold text-primary-700">
-                                Quantité:{' '}
-                                <span className="text-accent-orange">
-                                  {item.quantity}
-                                </span>
-                              </p>
-                              <p className="text-sm font-serif font-bold text-accent-orange">
-                                DA{(item.price * item.quantity).toFixed(2)}
-                              </p>
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <p className="text-primary-600 text-sm">
-                          Aucun article dans cette commande
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Adresse */}
-                  {order.address && (
-                    <div className="mb-6">
-                      <h3 className="font-serif font-semibold text-primary-700 mb-2">
-                        Adresse de livraison
-                      </h3>
-                      <p className="text-primary-600 text-sm">{order.address}</p>
-                    </div>
-                  )}
-
-                  {/* Status Change */}
-                  <div className="border-t border-primary-200 pt-4">
-                    <label className="block text-sm font-semibold text-primary-700 mb-2">
-                      Changer le statut
-                    </label>
-                    <div className="relative inline-block w-full max-w-xs">
-                      <select
-                        value={order.status}
-                        onChange={(e) =>
-                          updateOrderStatus(order.id, e.target.value)
-                        }
-                        disabled={updatingId === order.id}
-                        className={`appearance-none w-full px-4 py-2 rounded-lg text-sm font-medium cursor-pointer border-0 ${getStatusColor(
-                          order.status
-                        )} disabled:opacity-50`}
-                      >
-                        <option value="pending">En attente</option>
-                        <option value="confirmed">Confirmée</option>
-                        <option value="shipped">Expédiée</option>
-                        <option value="completed">Complétée</option>
-                      </select>
-                      <ChevronDown
-                        size={16}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-primary-700"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Meta */}
-                  <div className="mt-4 text-xs text-primary-500 border-t border-primary-200 pt-4">
-                    <p>
-                      Commande créée le{' '}
-                      {new Date(order.created_at).toLocaleDateString('fr-FR')} à{' '}
-                      {new Date(order.created_at).toLocaleTimeString('fr-FR')}
-                    </p>
-                  </div>
+              {/* Delivery Address */}
+              <div className="border-t border-primary-200 pt-6">
+                <h3 className="font-serif font-semibold text-lg text-primary-700 mb-4">
+                  Adresse de livraison
+                </h3>
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    name="city"
+                    placeholder="Ville"
+                    value={formData.city}
+                    onChange={handleChange}
+                    required
+                    className="input-field"
+                  />
+                  <textarea
+                    name="address"
+                    placeholder="Adresse complète (rue, numéro, code postal)"
+                    value={formData.address}
+                    onChange={handleChange}
+                    required
+                    rows={3}
+                    className="input-field resize-none"
+                  />
                 </div>
-              )}
+              </div>
+
+              {/* Notes */}
+              <div className="border-t border-primary-200 pt-6">
+                <h3 className="font-serif font-semibold text-lg text-primary-700 mb-4">
+                  Notes (optionnel)
+                </h3>
+                <textarea
+                  name="notes"
+                  placeholder="Ajoutez des notes ou des instructions spéciales..."
+                  value={formData.notes}
+                  onChange={handleChange}
+                  rows={3}
+                  className="input-field resize-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full btn-primary py-4 font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Traitement...' : 'Confirmer la commande'}
+              </button>
+            </form>
+          </div>
+
+          {/* Summary */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-2xl p-8 space-y-6 h-fit sticky top-24">
+              <div>
+                <h3 className="font-serif font-semibold text-lg text-primary-700 mb-4">
+                  Résumé de la commande
+                </h3>
+                <div className="space-y-3 pb-4 border-b border-primary-200">
+                  {items.map((item) => (
+                    <div
+                      key={item.product_id}
+                      className="flex justify-between text-sm text-primary-600"
+                    >
+                      <div>
+                        <p className="font-medium">{item.product?.name}</p>
+                        <p className="text-xs">Quantité: {item.quantity}</p>
+                      </div>
+                      <p className="font-medium">
+                        DA
+                        {((item.product?.price || 0) * item.quantity).toFixed(
+                          2
+                        )}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-3 pb-4 border-b border-primary-200">
+                <div className="flex justify-between text-primary-600">
+                  <span>Sous-total</span>
+                  <span>DA{total.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-primary-600">
+                  <span>Livraison</span>
+                  <span>Gratuite</span>
+                </div>
+              </div>
+
+              <div className="flex justify-between font-serif font-bold text-xl">
+                <span className="text-primary-700">Total</span>
+                <span className="text-accent-orange">DA{total.toFixed(2)}</span>
+              </div>
             </div>
-          ))}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   )
 }
