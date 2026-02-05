@@ -24,6 +24,7 @@ export default function EditProductPage({
     condition: 'excellent',
     dimensions: '',
     stock_status: 'available' as const,
+    quantity: 1,  // ⬅️ AJOUTE CETTE LIGNE
   })
 
 const categories = [
@@ -66,6 +67,7 @@ const categories = [
         condition: data.condition,
         dimensions: data.dimensions || '',
         stock_status: data.stock_status,
+        quantity: data.quantity || 1,  // ⬅️ AJOUTE CETTE LIGNE
       })
     } catch (error) {
       console.error('Error fetching product:', error)
@@ -75,12 +77,14 @@ const categories = [
   }
 
   const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    e: React.ChangeEvent< HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
     const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    setFormData((prev) => ({ 
+      ...prev, 
+      [name]: name === 'quantity' ? parseInt(value) || 1 : value  // ⬅️ AJOUTE CETTE LIGNE
+    }))
   }
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,6 +143,7 @@ const categories = [
         condition: formData.condition,
         dimensions: formData.dimensions || null,
         stock_status: formData.stock_status,
+        quantity: formData.quantity,  // ⬅️ AJOUTE CETTE LIGNE
         images: uploadedImages,
         updated_at: new Date().toISOString(),
       }
@@ -322,6 +327,19 @@ const categories = [
               onChange={handleInputChange}
               className="input-field"
             />
+
+            {/* ⬇️ AJOUTE CE CHAMP ⬇️ */}
+            <input
+              type="number"
+              name="quantity"
+              placeholder="Quantité en stock"
+              value={formData.quantity}
+              onChange={handleInputChange}
+              min="1"
+              required
+              className="input-field"
+            />
+
             <select
               name="stock_status"
               value={formData.stock_status}
