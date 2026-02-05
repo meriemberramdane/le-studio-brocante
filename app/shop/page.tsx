@@ -19,9 +19,21 @@ function ShopContent() {
   const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '')
   const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '')
 
-  const categories = [
-   'meubles', 'decoration', 'ceramiques', 'miroirs', 'luminaires', 'art', 'poupees','billets','bijoux','livres','textiles',
-  ]
+const categories = [
+  'Mobilier',
+  'Déco, Tableaux & Sculptures',
+  'Céramiques et Porcelaines',
+  'Luminaires',
+  'Montres et Bijoux',
+  'Livres & Imprimés Anciens',
+  'Musique',
+  'Jouets et Miniatures',
+  'Numismatique',
+  'Divers',
+  'Textiles & Tapisseries',
+  'Objets en Métal & Métaux Anciens',
+]
+
 
   useEffect(() => {
     fetchProducts()

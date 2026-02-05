@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import ProductCard from '@/components/ProductCard'
-import { Armchair, Frame, Lightbulb, Palette, Sparkles, Wind, Heart, Banknote, Gem, Book, Shirt 
-} from 'lucide-react'
+import { Armchair, Frame, Lightbulb, Watch, Music, Gift, Coins, Shirt, Sparkles, Wrench, Book, Palette} from 'lucide-react'
 
 async function getFeaturedProducts() {
   try {
@@ -24,19 +23,20 @@ async function getFeaturedProducts() {
 export default async function Home() {
   const featuredProducts = await getFeaturedProducts()
 
-  const categories = [
-   { name: 'Meubles', slug: 'meubles', icon: Armchair },
-   { name: 'Décoration', slug: 'decoration', icon: Palette },
-   { name: 'Céramiques', slug: 'ceramiques', icon: Wind },
-   { name: 'Miroirs', slug: 'miroirs', icon: Frame },
-   { name: 'Luminaires', slug: 'luminaires', icon: Lightbulb },
-   { name: 'Art', slug: 'art', icon: Sparkles },
-   { name: 'Poupées', slug: 'poupees', icon: Heart },
-   { name: 'Billets', slug: 'billets', icon: Banknote },
-   { name: 'Bijoux', slug: 'bijoux', icon: Gem },
-   { name: 'Livres', slug: 'livres', icon: Book },
-   { name: 'Textiles', slug: 'textiles', icon: Shirt },
-  ]
+const categories = [
+  { name: 'Mobilier', slug: 'Mobilier', icon: Armchair },
+  { name: 'Déco, Tableaux & Sculptures', slug: 'Déco, Tableaux & Sculptures', icon: Frame },
+  { name: 'Céramiques et Porcelaines', slug: 'Céramiques et Porcelaines', icon: Palette },
+  { name: 'Luminaires', slug: 'Luminaires', icon: Lightbulb },
+  { name: 'Montres et Bijoux', slug: 'Montres et Bijoux', icon: Watch },
+  { name: 'Livres & Imprimés Anciens', slug: 'Livres & Imprimés Anciens', icon: Book },
+  { name: 'Musique', slug: 'Musique', icon: Music },
+  { name: 'Jouets et Miniatures', slug: 'Jouets et Miniatures', icon: Gift },
+  { name: 'Numismatique', slug: 'Numismatique', icon: Coins },
+  { name: 'Divers', slug: 'Divers', icon: Sparkles },
+  { name: 'Textiles & Tapisseries', slug: 'Textiles & Tapisseries', icon: Shirt },
+  { name: 'Objets en Métal & Métaux Anciens', slug: 'Objets en Métal & Métaux Anciens', icon: Wrench },
+]
 
   const whyUs = [
     {

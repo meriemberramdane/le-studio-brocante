@@ -26,8 +26,22 @@ export default function EditProductPage({
     stock_status: 'available' as const,
   })
 
-  const categories = ['meubles', 'decoration', 'ceramiques', 'miroirs', 'luminaires', 'art', 'poupees','billets','bijoux','livres','textiles',]
-  const conditions = ['excellent', 'tres-bon-etat', 'bon-etat', 'juste', 'restauré']
+const categories = [
+  'Mobilier',
+  'Déco, Tableaux & Sculptures',
+  'Céramiques et Porcelaines',
+  'Luminaires',
+  'Montres et Bijoux',
+  'Livres & Imprimés Anciens',
+  'Musique',
+  'Jouets et Miniatures',
+  'Numismatique',
+  'Divers',
+  'Textiles & Tapisseries',
+  'Objets en Métal & Métaux Anciens',
+]
+
+  const conditions = ['excellent', 'tres bon etat', 'bon etat', 'juste','usé','restauré']
 
   useEffect(() => {
     fetchProduct()
