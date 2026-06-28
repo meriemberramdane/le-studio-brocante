@@ -21,7 +21,7 @@ export default function EditProductPage({
     price: '',
     description: '',
     category: 'decor',
-    condition: 'excellent',
+    condition: 'Excellent',
     dimensions: '',
     stock_status: 'available' as const,
   })
@@ -41,7 +41,7 @@ const categories = [
   'Objets en Métal & Métaux Anciens',
 ]
 
-  const conditions = ['excellent', 'tres bon etat', 'bon etat', 'juste','usé','restauré']
+  const conditions = ['Excellent', 'Très bon état', 'Bon état', 'Juste','Usé','Restauré']
 
   useEffect(() => {
     fetchProduct()

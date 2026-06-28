@@ -34,7 +34,7 @@ const categories = [
   'Textiles & Tapisseries',
   'Objets en Métal & Métaux Anciens',
 ]
-  const conditions = ['excellent', 'tres bon etat', 'bon etat', 'juste','usé','restauré']
+  const conditions = ['Excellent', 'Très bon état', 'Bon état', 'Juste','Usé','Restauré']
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
