@@ -72,9 +72,6 @@ export default function OrderConfirmationPage({
           <p className="text-lg text-primary-600 mb-2">
             Merci pour votre achat, {order.full_name}
           </p>
-          <p className="text-primary-600 mb-8">
-            Un email de confirmation a été envoyé à {order.email}
-          </p>
           <div className="inline-block bg-primary-50 rounded-lg px-6 py-3 mb-8">
             <p className="text-sm text-primary-600">Numéro de commande</p>
             <p className="text-2xl font-serif font-bold text-primary-700">

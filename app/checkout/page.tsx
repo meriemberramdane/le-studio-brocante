@@ -89,6 +89,8 @@ export default function CheckoutPage() {
               orderNumber,
               customerName: formData.fullName,
               customerEmail: formData.email,
+              customerPhone: formData.phone,
+              customerAddress: `${formData.address}, ${formData.city}`,
               items: orderItems,
               total: getTotalPrice(),
             }),
