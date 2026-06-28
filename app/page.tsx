@@ -111,8 +111,8 @@ const categories = [
           <div className="container-narrow">
             <div className="text-center mb-16">
               <h2 className="section-title">Nouveaux arrivages</h2>
-              <p className="section-subtitle">
-                Les plus belles pièces fraîchement arriées dans notre galerie.
+              <p className="text-primary-600 text-center">
+                Les plus belles pièces fraîchement arrivées dans notre galerie.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
