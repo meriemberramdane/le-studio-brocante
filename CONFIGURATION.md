@@ -226,7 +226,8 @@ Also update in:
 - `excellent` → Excellent
 - `very-good` → Très bon
 - `good` → Bon
-- `fair` → Acceptable
+- `correct` → Juste
+- `worned` → Usé
 - `restored` → Restauré
 
 Add new ones in `app/admin/add-product/page.tsx` and database.

@@ -8,7 +8,7 @@ import { Trash2 } from 'lucide-react'
 
 export default function CartPage() {
   const [mounted, setMounted] = useState(false)
-  const { items, removeItem, updateQuantity, getTotalPrice } = useCart()
+  const { items, removeItem, getTotalPrice } = useCart()
 
   useEffect(() => {
     setMounted(true)
@@ -71,50 +71,12 @@ export default function CartPage() {
                       DA{item.product?.price.toFixed(2)}
                     </p>
                   </div>
-
-                  {/* Quantity */}
-                  <div className="flex flex-col items-end gap-4">
-                    <div className="flex items-center border border-primary-200 rounded-lg">
-                      <button
-                        onClick={() =>
-                          updateQuantity(
-                            item.product_id,
-                            item.quantity - 1
-                          )
-                        }
-                        className="px-3 py-2 text-primary-700 hover:bg-primary-50"
-                      >
-                        −
-                      </button>
-                      <input
-                        type="number"
-                        min="1"
-                        value={item.quantity}
-                        onChange={(e) =>
-                          updateQuantity(
-                            item.product_id,
-                            parseInt(e.target.value) || 1
-                          )
-                        }
-                        className="w-12 text-center border-l border-r border-primary-200 py-2 outline-none text-sm"
-                      />
-                      <button
-                        onClick={() =>
-                          updateQuantity(
-                            item.product_id,
-                            item.quantity + 1
-                          )
-                        }
-                        className="px-3 py-2 text-primary-700 hover:bg-primary-50"
-                      >
-                        +
-                      </button>
-                    </div>
+                  <div className="flex items-start">
                     <button
-                      onClick={() => removeItem(item.product_id)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                     onClick={() => removeItem(item.product_id)}
+                     className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                     >
-                      <Trash2 size={20} />
+                     <Trash2 size={20} />
                     </button>
                   </div>
                 </div>

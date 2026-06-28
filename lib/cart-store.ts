@@ -4,9 +4,8 @@ import { CartItem, Product } from './supabase'
 
 interface CartStore {
   items: CartItem[]
-  addItem: (product: Product, quantity: number) => void
+  addItem: (product: Product) => void
   removeItem: (productId: string) => void
-  updateQuantity: (productId: string, quantity: number) => void
   clearCart: () => void
   getTotalPrice: () => number
   getItemCount: () => number
@@ -17,41 +16,32 @@ export const useCart = create<CartStore>()(
     (set, get) => ({
       items: [],
 
-      addItem: (product: Product, quantity: number) => {
+      addItem: (product: Product) => {
         const items = get().items
-        const existingItem = items.find((item) => item.product_id === product.id)
 
-        if (existingItem) {
-          set({
-            items: items.map((item) =>
-              item.product_id === product.id
-                ? { ...item, quantity: item.quantity + quantity }
-                : item
-            ),
-          })
-        } else {
-          set({
-            items: [...items, { product_id: product.id, quantity, product }],
-          })
-        }
+        const alreadyExists = items.some(
+          (item) => item.product_id === product.id
+        )
+
+        if (alreadyExists) return
+
+        set({
+          items: [
+            ...items,
+            {
+              product_id: product.id,
+              product,
+            },
+          ],
+        })
       },
 
       removeItem: (productId: string) => {
         set({
-          items: get().items.filter((item) => item.product_id !== productId),
+          items: get().items.filter(
+            (item) => item.product_id !== productId
+          ),
         })
-      },
-
-      updateQuantity: (productId: string, quantity: number) => {
-        if (quantity <= 0) {
-          get().removeItem(productId)
-        } else {
-          set({
-            items: get().items.map((item) =>
-              item.product_id === productId ? { ...item, quantity } : item
-            ),
-          })
-        }
       },
 
       clearCart: () => {
@@ -60,12 +50,12 @@ export const useCart = create<CartStore>()(
 
       getTotalPrice: () => {
         return get().items.reduce((total, item) => {
-          return total + (item.product?.price || 0) * item.quantity
+          return total + (item.product?.price || 0)
         }, 0)
       },
 
       getItemCount: () => {
-        return get().items.reduce((count, item) => count + item.quantity, 0)
+        return get().items.length
       },
     }),
     {

@@ -97,12 +97,9 @@ export default function OrderConfirmationPage({
                     <p className="font-medium text-primary-700">
                       {item.product_name}
                     </p>
-                    <p className="text-sm text-primary-600">
-                      Quantité: {item.quantity}
-                    </p>
                   </div>
                   <p className="font-serif font-bold text-accent-orange">
-                    DA{(item.price * item.quantity).toFixed(2)}
+                    DA{(item.price).toFixed(2)}
                   </p>
                 </div>
               ))}

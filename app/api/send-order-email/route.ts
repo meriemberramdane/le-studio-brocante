@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
           Authorization: `Bearer ${RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: 'orders@lestudiobrocante.com',
+          from: 'onboarding@resend.dev',
           to: customerEmail,
           subject: `Confirmation de commande #${orderNumber}`,
           html: customerEmailHtml,
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
           Authorization: `Bearer ${RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: 'orders@lestudiobrocante.com',
+          from: 'onboarding@resend.dev',
           to: ADMIN_EMAIL,
           subject: `[ADMIN] Nouvelle commande reçue #${orderNumber}`,
           html: adminEmailHtml,

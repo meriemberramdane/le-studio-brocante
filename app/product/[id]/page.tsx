@@ -14,7 +14,6 @@ export default function ProductPage({
 }) {
   const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
-  const [quantity, setQuantity] = useState(1)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [addedToCart, setAddedToCart] = useState(false)
   const [isFavorite, setIsFavorite] = useState(false)
@@ -66,7 +65,7 @@ export default function ProductPage({
 
   const handleAddToCart = () => {
     if (product) {
-      addItem(product, quantity)
+      addItem(product)
       setAddedToCart(true)
       setTimeout(() => setAddedToCart(false), 2000)
     }
@@ -250,32 +249,6 @@ export default function ProductPage({
 
             {/* Actions */}
             <div className="space-y-4 pt-8 border-t border-primary-200">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center border border-primary-200 rounded-lg">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-4 py-2 text-primary-700 hover:bg-primary-50 transition-colors"
-                  >
-                    −
-                  </button>
-                  <input
-                    type="number"
-                    min="1"
-                    value={quantity}
-                    onChange={(e) =>
-                      setQuantity(Math.max(1, parseInt(e.target.value) || 1))
-                    }
-                    className="w-16 text-center text-black border-l border-r border-primary-200 py-2 outline-none"
-                  />
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="px-4 py-2 text-primary-700 hover:bg-primary-50 transition-colors"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
               {isSold ? (
                 <button disabled className="w-full py-4 bg-gray-400 text-white rounded-lg font-semibold cursor-not-allowed">
                   Article vendu

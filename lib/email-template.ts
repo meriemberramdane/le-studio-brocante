@@ -12,11 +12,8 @@ export function getOrderConfirmationEmail(
       <td style="padding: 10px; border-bottom: 1px solid #eee;">
         ${item.product_name}
       </td>
-      <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">
-        ${item.quantity}
-      </td>
       <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">
-        €${(item.price * item.quantity).toFixed(2)}
+        €${(item.price).toFixed(2)}
       </td>
     </tr>
   `
@@ -54,7 +51,6 @@ export function getOrderConfirmationEmail(
               <thead>
                 <tr style="background-color: #f5f5f5;">
                   <th style="padding: 10px; text-align: left;">Produit</th>
-                  <th style="padding: 10px; text-align: center;">Quantité</th>
                   <th style="padding: 10px; text-align: right;">Prix</th>
                 </tr>
               </thead>
@@ -91,11 +87,8 @@ export function getAdminNotificationEmail(
       <td style="padding: 10px; border-bottom: 1px solid #eee;">
         ${item.product_name}
       </td>
-      <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">
-        ${item.quantity}
-      </td>
       <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">
-        €${(item.price * item.quantity).toFixed(2)}
+        €${(item.price).toFixed(2)}
       </td>
     </tr>
   `
@@ -135,7 +128,6 @@ export function getAdminNotificationEmail(
               <thead>
                 <tr style="background-color: #f5f5f5;">
                   <th style="padding: 10px; text-align: left;">Produit</th>
-                  <th style="padding: 10px; text-align: center;">Quantité</th>
                   <th style="padding: 10px; text-align: right;">Prix</th>
                 </tr>
               </thead>

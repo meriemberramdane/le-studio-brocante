@@ -176,14 +176,8 @@ export default function AdminOrders() {
                               </p>
                             </div>
                             <div className="text-right">
-                              <p className="font-semibold text-primary-700">
-                                Quantité:{' '}
-                                <span className="text-accent-orange">
-                                  {item.quantity}
-                                </span>
-                              </p>
                               <p className="text-sm font-serif font-bold text-accent-orange">
-                                DA{(item.price * item.quantity).toFixed(2)}
+                                DA{(item.price).toFixed(2)}
                               </p>
                             </div>
                           </div>

@@ -59,7 +59,6 @@ export default function CheckoutPage() {
         product_id: item.product_id,
         product_name: item.product?.name || '',
         price: item.product?.price || 0,
-        quantity: item.quantity,
       }))
 
       const orderData = {
@@ -227,11 +226,10 @@ export default function CheckoutPage() {
                     >
                       <div>
                         <p className="font-medium">{item.product?.name}</p>
-                        <p className="font-medium">Quantité: {item.quantity}</p>
                       </div>
                       <p className="font-medium">
                         DA
-                        {((item.product?.price || 0) * item.quantity).toFixed(
+                        {((item.product?.price || 0)).toFixed(
                           2
                         )}
                       </p>

@@ -42,11 +42,9 @@ export interface OrderItem {
   product_id: string
   product_name: string
   price: number
-  quantity: number
 }
 
 export interface CartItem {
   product_id: string
-  quantity: number
   product?: Product
 }
