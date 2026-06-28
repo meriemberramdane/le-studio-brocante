@@ -21,7 +21,7 @@ export default function Footer() {
                 <Facebook size={20} />
               </a>
               <a
-                href="https://instagram.com/studio_brocante_"
+                href="https://instagram.com/le_studio_brocante"
                 className="hover:text-accent-orange transition-colors"
               >
                 <Instagram size={20} />
@@ -97,8 +97,8 @@ export default function Footer() {
               </li>
               <li className="flex gap-2">
                 <Mail size={16} className="flex-shrink-0 mt-0.5" />
-                <a href="mailto:berexirayan@gmail.com" className="hover:text-accent-orange transition-colors">
-                  berexirayan@gmail.com
+                <a href="mailto:lestudiobrocante@gmail.com" className="hover:text-accent-orange transition-colors">
+                  lestudiobrocante@gmail.com
                 </a>
               </li>
             </ul>

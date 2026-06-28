@@ -32,9 +32,8 @@ export default function ShippingPage() {
                   métropolitaine.
                 </p>
                 <p>
-                  <strong>Frais de port:</strong> La livraison est gratuite
-                  pour toute commande. Pour les livraisons à l&apos;étranger,
-                  veuillez nous contacter directement.
+                  <strong>Frais de port:</strong> La livraison est a calculée 
+                  en fonction de votre adresse et du poids de votre commande.
                 </p>
                 <p>
                   <strong>Emballage:</strong> Nous emballons chaque article

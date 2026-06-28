@@ -265,7 +265,7 @@ export default function ProductPage({
                     onChange={(e) =>
                       setQuantity(Math.max(1, parseInt(e.target.value) || 1))
                     }
-                    className="w-16 text-center border-l border-r border-primary-200 py-2 outline-none"
+                    className="w-16 text-center text-black border-l border-r border-primary-200 py-2 outline-none"
                   />
                   <button
                     onClick={() => setQuantity(quantity + 1)}

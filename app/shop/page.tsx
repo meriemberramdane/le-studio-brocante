@@ -45,7 +45,6 @@ const categories = [
       let query = supabase
         .from('products')
         .select('*')
-        .eq('stock_status', 'available')
 
       // Filtre par recherche (dans le nom ou la description)
       if (searchTerm) {

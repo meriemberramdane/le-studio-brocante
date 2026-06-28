@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getOrderConfirmationEmail, getAdminNotificationEmail } from '@/lib/email-template'
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY
-const ADMIN_EMAIL = 'berexirayan@gmail.com'
+const ADMIN_EMAIL = 'lestudiobrocante@gmail.com'
 
 export async function POST(request: NextRequest) {
   try {

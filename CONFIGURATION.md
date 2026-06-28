@@ -267,7 +267,7 @@ Example:
 
 **Location**: `app/checkout/page.tsx` and `app/cart/page.tsx`
 
-Currently shows "À calculer" or "Gratuite". To add real shipping:
+Currently shows "À calculer". To add real shipping:
 
 ```typescript
 const calculateShipping = (total: number): number => {

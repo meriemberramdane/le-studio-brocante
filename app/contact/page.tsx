@@ -80,8 +80,8 @@ export default function ContactPage() {
                 Email
               </h3>
               <p className="text-primary-600">
-                <a href="berexirayan@gmail.com" className="hover:text-accent-orange transition-colors">
-                  berexirayan@gmail.com
+                <a href="lestudiobrocante@gmail.com" className="hover:text-accent-orange transition-colors">
+                  lestudiobrocante@gmail.com
                 </a>
               </p>
             </div>

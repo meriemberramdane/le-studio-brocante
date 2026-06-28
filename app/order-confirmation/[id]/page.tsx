@@ -134,7 +134,7 @@ export default function OrderConfirmationPage({
               </span>
             </div>
             <p className="text-sm text-primary-600 mt-2">
-              Livraison gratuite
+              Livraison en fonction de votre adresse. Les frais de livraison seront communiqués lors de la confirmation.
             </p>
           </div>
 
@@ -146,8 +146,7 @@ export default function OrderConfirmationPage({
             <ul className="space-y-2 text-sm text-primary-600">
               <li>✓ Votre commande a été reçue</li>
               <li>→ Nous préparons votre colis</li>
-              <li>→ Vous recevrez un email de suivi</li>
-              <li>→ Livraison en 5-7 jours ouvrables</li>
+              <li>→ Livraison en 2-5 jours ouvrables</li>
             </ul>
           </div>
         </div>

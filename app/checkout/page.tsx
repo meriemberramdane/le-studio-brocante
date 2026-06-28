@@ -227,7 +227,7 @@ export default function CheckoutPage() {
                     >
                       <div>
                         <p className="font-medium">{item.product?.name}</p>
-                        <p className="text-xs">Quantité: {item.quantity}</p>
+                        <p className="font-medium">Quantité: {item.quantity}</p>
                       </div>
                       <p className="font-medium">
                         DA
@@ -247,7 +247,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-primary-600">
                   <span>Livraison</span>
-                  <span>Gratuite</span>
+                  <span>En fonction de votre adresse</span>
                 </div>
               </div>
 
