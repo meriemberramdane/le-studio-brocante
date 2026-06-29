@@ -15,7 +15,6 @@
 ./app/admin/page.tsx
 ./app/cart/page.tsx
 ./app/checkout/page.tsx
-./app/contact/page.tsx
 ./app/globals.css
 ./app/layout.tsx
 ./app/order-confirmation/[id]/page.tsx

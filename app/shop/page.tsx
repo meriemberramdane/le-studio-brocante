@@ -19,6 +19,10 @@ function ShopContent() {
   const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '')
   const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '')
 
+  useEffect(() => {
+  setSearchTerm(searchParams.get('q') || '')
+}, [searchParams])
+
 const categories = [
   'Mobilier',
   'Déco, Tableaux & Sculptures',

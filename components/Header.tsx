@@ -4,11 +4,14 @@ import Link from 'next/link'
 import { useCart } from '@/lib/cart-store'
 import { ShoppingCart, Search, Menu, X, Heart } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [itemCount, setItemCount] = useState(0)
   const { getItemCount } = useCart()
+  const router = useRouter()
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     // Hydrate cart count after mounting
@@ -20,7 +23,6 @@ export default function Header() {
     { href: '/', label: 'Accueil' },
     { href: '/shop', label: 'Boutique' },
     { href: '/about', label: 'À propos' },
-    { href: '/contact', label: 'Contact' },
   ]
 
   return (
@@ -49,17 +51,44 @@ export default function Header() {
         {/* Right Actions */}
         <div className="flex items-center gap-4">
           {/* Search (desktop only) */}
-            <Link
-               href="/shop"
-               className="hidden lg:flex items-center bg-primary-50 rounded-lg px-3 py-2 hover:bg-primary-100 transition-colors">
-             <Search size={18} className="text-primary-600" />
-             <input
-              type="text"
-              placeholder="Rechercher..."
-              className="bg-transparent px-2 py-1 text-sm outline-none text-primary-700 placeholder-primary-400 cursor-pointer"
-              onClick={(e) => e.currentTarget.closest('a')?.click()}
-               />
-            </Link>
+<div className="hidden lg:flex items-center bg-primary-50 rounded-lg px-3 py-2 hover:bg-primary-100 transition-colors">
+  <Search
+    size={18}
+    className="text-primary-600 cursor-pointer"
+    onClick={() => {
+      const query = search.trim()
+
+      router.push(
+        query
+          ? `/shop?q=${encodeURIComponent(query)}`
+          : '/shop'
+      )
+
+      setSearch('')
+    }}
+  />
+
+  <input
+    type="text"
+    placeholder="Rechercher..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    onKeyDown={(e) => {
+      if (e.key === 'Enter') {
+        const query = search.trim()
+
+        router.push(
+          query
+            ? `/shop?q=${encodeURIComponent(query)}`
+            : '/shop'
+        )
+
+        setSearch('')
+      }
+    }}
+    className="bg-transparent px-2 py-1 text-sm outline-none text-primary-700 placeholder-primary-400 w-48"
+  />
+</div>
 
           {/* Cart Icon */}
           <Link
@@ -74,13 +103,7 @@ export default function Header() {
             )}
           </Link>
 
-          {/* Admin Link */}
-          <Link
-            href="/admin"
-            className="text-xs text-primary-200 hover:text-accent-orange transition-colors"
-          >
-            Admin
-          </Link>
+          {/* Favorites Link */}
            <Link href="/favorites" className="hover:text-accent-orange transition-colors flex items-center gap-2">
               <Heart size={20} />
           </Link>

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import ProductCard from '@/components/ProductCard'
 import { Armchair, Frame, Lightbulb, Watch, Music, Gift, Coins, Shirt, Sparkles, Wrench, Book, Palette} from 'lucide-react'
+import { Instagram, Phone, Mail } from 'lucide-react'
 
 async function getFeaturedProducts() {
   try {
@@ -146,25 +147,65 @@ const categories = [
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-primary-700">
-        <div className="container-narrow text-center text-white">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">
-            Rejoignez notre communauté
-          </h2>
-          <p className="text-xl text-primary-200 mb-8 max-w-2xl mx-auto">
-            Recevez les nouveautés et les offres exclusives directement dans votre boîte.
-          </p>
-          <form className="flex gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Votre email"
-              className="flex-1 px-4 py-3 rounded-lg text-primary-700 placeholder-primary-400 focus:outline-none focus:ring-2 focus:ring-accent-orange"
-            />
-            <button type="submit" className="btn-primary">
-              S&apos;abonner
-            </button>
-          </form>
+      {/* Contact Section */}
+      <section className="py-20 bg-primary-50 border-t border-primary-200">
+        <div className="container-narrow">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-serif font-bold text-primary-700 mb-4">
+             Contact
+            </h2>
+            <p className="text-primary-600">
+             Une question ? Contactez-nous directement.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Instagram */}
+            <div className="card text-center">
+              <Instagram className="w-12 h-12 text-accent-orange mx-auto mb-4" />
+                <h3 className="font-serif font-semibold text-lg text-primary-700 mb-2">
+                  Instagram
+                </h3>
+
+                <a
+                  href="https://instagram.com/le_studio_brocante"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary-600 hover:text-accent-orange transition-colors"
+                >
+                  @le_studio_brocante
+                </a>
+            </div>
+
+          {/* Téléphone */}
+            <div className="card text-center">
+              <Phone className="w-12 h-12 text-accent-orange mx-auto mb-4" />
+                <h3 className="font-serif font-semibold text-lg text-primary-700 mb-2">
+                  Téléphone
+                </h3>
+
+                <p className="text-primary-600">
+                  +213 559 030 084
+                  <br />
+                  Tous les jours 9h - 21h
+                </p>
+            </div>
+
+          {/* Email */}
+            <div className="card text-center">
+             <Mail className="w-12 h-12 text-accent-orange mx-auto mb-4" />
+              <h3 className="font-serif font-semibold text-lg text-primary-700 mb-2">
+                Email
+              </h3>
+
+              <a
+                href="mailto:lestudiobrocante@gmail.com"
+                className="text-primary-600 hover:text-accent-orange transition-colors"
+              >
+                lestudiobrocante@gmail.com
+              </a>
+            </div>
+          </div>
         </div>
       </section>
     </div>
